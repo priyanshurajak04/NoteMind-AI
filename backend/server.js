@@ -1,7 +1,8 @@
-// server.js — Updated for Phase 3
+// server.js — Updated for Deployment
 
 require('dotenv').config();
 
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
@@ -12,6 +13,11 @@ const PORT = process.env.PORT || 5000;
 // Connect to MongoDB
 connectDB();
 
+// Create uploads folder automatically if missing
+if (!fs.existsSync('uploads')) {
+  fs.mkdirSync('uploads');
+}
+
 // ─── MIDDLEWARE ────────────────────────────────────────────────
 app.use(cors({
   origin: [
@@ -20,11 +26,11 @@ app.use(cors({
   ],
   credentials: true,
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files as static files
-// e.g. http://localhost:5000/uploads/filename.pdf
+// Serve uploaded files
 app.use('/uploads', express.static('uploads'));
 
 // ─── ROUTES ────────────────────────────────────────────────────
@@ -38,7 +44,7 @@ app.get('/', (req, res) => {
 // Auth routes
 app.use('/api/auth', require('./routes/authRoutes'));
 
-// Note routes ← NEW
+// Note routes
 app.use('/api/notes', require('./routes/noteRoutes'));
 
 // ─── START SERVER ──────────────────────────────────────────────
