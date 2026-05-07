@@ -1,13 +1,9 @@
-// frontend/src/services/api.js
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_URL ||
-    'http://localhost:5000/api',
+  baseURL: 'https://notemind-ai-ujq8.onrender.com/api',
 });
 
-// Attach JWT token automatically
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
 
@@ -18,14 +14,12 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// ─── AUTH ─────────────────────────────────────────────
 export const registerUser = (data) =>
   API.post('/auth/register', data);
 
 export const loginUser = (data) =>
   API.post('/auth/login', data);
 
-// ─── NOTES ────────────────────────────────────────────
 export const uploadNote = (formData) =>
   API.post('/notes/upload', formData, {
     headers: {
