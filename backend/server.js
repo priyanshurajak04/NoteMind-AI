@@ -14,7 +14,10 @@ connectDB();
 
 // ─── MIDDLEWARE ────────────────────────────────────────────────
 app.use(cors({
-  origin: 'http://localhost:5173',  // Vite's default port
+  origin: [
+    'http://localhost:5173',
+    'https://voluble-tarsier-28342e.netlify.app'
+  ],
   credentials: true,
 }));
 app.use(express.json());
